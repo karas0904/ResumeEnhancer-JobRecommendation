@@ -5,7 +5,7 @@ import os
 import difflib
 from config import GEMINI_KEY
 
-
+# API key for Gemini API
 GENAI_API_KEY = GEMINI_KEY
 
 # Configure Gemini API
