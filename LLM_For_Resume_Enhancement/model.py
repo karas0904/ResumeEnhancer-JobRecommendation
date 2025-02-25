@@ -3,9 +3,10 @@ import google.generativeai as genai
 import re
 import os
 import difflib
+from config import GEMINI_KEY
 
 
-GENAI_API_KEY = "AIzaSyAQKeekaGeS6k89bYRqD3GxtR4HbwiPZn8"
+GENAI_API_KEY = GEMINI_KEY
 
 # Configure Gemini API
 genai.configure(api_key=GENAI_API_KEY)
