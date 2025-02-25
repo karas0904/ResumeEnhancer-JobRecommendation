@@ -1,5 +1,4 @@
-# app.py
-import streamlit as st
+
 import requests
 from config import APPLICATION_ID, APPLICATION_KEY
 
