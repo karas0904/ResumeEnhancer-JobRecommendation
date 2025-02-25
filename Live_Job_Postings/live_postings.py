@@ -15,29 +15,3 @@ def fetch_jobs(job_role):
     else:
         st.error(f"Error fetching jobs: {response.status_code}")
         return []
-
-# Streamlit interface
-st.title("Job Listing Finder")
-st.write("Enter a job role to search for job listings:")
-
-# Input box for job role
-job_role = st.text_input("Job Role (e.g., 'Software Engineer')")
-
-# Button to search for jobs
-if st.button("Search Jobs"):
-    if job_role:
-        st.write(f"Searching for jobs as '{job_role}'...")
-        jobs = fetch_jobs(job_role)
-        
-        if jobs:
-            # Display the job listings
-            for job in jobs:
-                st.write(f"**Job Title:** {job.get('title')}")
-                st.write(f"**Company:** {job.get('company', {}).get('display_name', 'N/A')}")
-                st.write(f"**Location:** {job.get('location', {}).get('area', 'N/A')}")
-                st.write(f"**Link:** [{job.get('redirect_url')}]({job.get('redirect_url')})")
-                st.write("-" * 50)
-        else:
-            st.write("No jobs found.")
-    else:
-        st.warning("Please enter a job role to search.")
