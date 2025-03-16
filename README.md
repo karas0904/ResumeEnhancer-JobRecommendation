@@ -20,8 +20,7 @@ This project is a comprehensive web application built using **Streamlit** to hel
 
 ## Tech Stack
 
-- **Frontend**: Streamlit  
-- **Backend**: Python (FastAPI), SQL (optional)  
+- **Frontend**: Streamlit   
 - **Libraries**: PyPDF2, PDFMiner, NLTK, scikit-learn, Hugging Face Transformers, NumPy, Pandas  
 - **Version Control**: Git/GitHub  
 
