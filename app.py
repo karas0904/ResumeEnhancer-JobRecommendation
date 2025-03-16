@@ -24,7 +24,6 @@ resume_file = st.file_uploader("📂 Upload Resume (PDF)", type=["pdf"])
 
 jd_file = st.file_uploader("📂 Upload Job Description (PDF)", type=["pdf"])
 
-job_role = st.text_input("Job Role (e.g., 'Software Engineer')")
 
 def save_uploaded_file(uploaded_file):
     """ Saves uploaded file temporarily and returns the path """
@@ -52,12 +51,13 @@ if st.button("🚀 Analyze Resume"):
 
             with st.spinner("📝 Enhancing Resume..."):
                 improved_resume = enhance_resume(resume_text, jd_text)
-                #highlighted_resume = highlight_differences(resume_text, improved_resume)
+                
 
                 # Display with color formatting
                 st.subheader("📌 Updated Resume ")
                 st.markdown(f'<div style="border:1px solid #ddd; padding:10px; border-radius:5px;">{improved_resume}</div>', unsafe_allow_html=True)
 
+                st.subheader("Download the text file for viewing the changes in proper format")
                 # Download Button
                 st.subheader("📥 Download Updated Resume")
                 st.download_button(label="📩 Download as .txt",
@@ -68,6 +68,9 @@ if st.button("🚀 Analyze Resume"):
             st.error("⚠️ Could not extract text from one or both PDFs. Try again.")
     else:
         st.error("⚠️ Please upload both Resume and Job Description PDFs.")
+
+
+job_role = st.text_input("Job Role (e.g., 'Software Engineer')")
 
 
 # Button to search for jobs
