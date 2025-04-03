@@ -1,4 +1,8 @@
 import streamlit as st
+import numpy as np
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
 
 
 # Page title & icon
@@ -10,6 +14,45 @@ import tempfile
 from LLM_For_Resume_Enhancement.model  import extract_text_from_pdf, score_resume, enhance_resume
 from Live_Job_Postings.live_postings import fetch_jobs
 
+# Load the model globally (outside any function) to avoid reloading
+@st.cache_resource
+def load_model():
+    return SentenceTransformer("all-MiniLM-L6-v2")
+
+model = load_model()
+
+# Add this after your existing imports
+@st.cache_data
+def load_job_data():
+    # Load your job postings data
+    postings_sample_df = pd.read_csv("../Ml_Model_For_Similar_Jobs/postings.csv")  # Update path
+    # Convert stored embeddings back to numpy arrays
+    job_postings_embeddings = np.array([eval(emb) for emb in postings_sample_df['embeddings']])
+    return postings_sample_df, job_postings_embeddings
+
+# Add this function to your existing code
+def get_similar_jobs(resume_text, postings_df, job_embeddings, top_n=5):
+    # Generate embedding for the resume
+    resume_embedding = model.encode([resume_text], show_progress_bar=False)
+    
+    # Calculate similarities
+    similarities = cosine_similarity(resume_embedding, job_embeddings)
+    
+    # Get top matches
+    top_indices = np.argsort(similarities[0])[::-1][:top_n]
+    
+    # Get matching jobs
+    matches = []
+    for idx in top_indices:
+        job = postings_df.iloc[idx]
+        similarity_score = similarities[0][idx]
+        matches.append({
+            'title': job['title'],
+            'job_id': job['job_id'],
+            'similarity': similarity_score
+        })
+    
+    return matches
 
 
 
