@@ -3,7 +3,7 @@ import google.generativeai as genai
 import re
 import os
 import difflib
-from config import GEMINI_KEY
+from .config import GEMINI_KEY
 
 # API key for Gemini API
 GENAI_API_KEY = GEMINI_KEY

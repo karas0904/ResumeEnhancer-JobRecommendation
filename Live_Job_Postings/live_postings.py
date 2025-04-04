@@ -1,6 +1,6 @@
 
 import requests
-from config import APPLICATION_ID, APPLICATION_KEY
+from LLM_For_Resume_Enhancement.config import APPLICATION_ID, APPLICATION_KEY
 
 # Function to fetch job listings from Adzuna API
 def fetch_jobs(job_role):
