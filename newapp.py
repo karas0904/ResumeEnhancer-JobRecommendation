@@ -35,13 +35,37 @@ def load_model():
     
 @st.cache_data
 def load_job_data():
-    postings_df = pd.read_csv("Ml_Model_For_Similar_Jobs/postings.csv")
-    postings_sample_df = postings_df.sample(1000)
+    # Construct the file path relative to the script's directory
+    file_path = os.path.join(os.path.dirname(__file__), "Ml_Model_For_Similar_Jobs", "postings.csv")
+    
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        st.error(f"File not found: {file_path}")
+        raise FileNotFoundError(f"File not found: {file_path}")
+    
+    # Read the CSV file
+    try:
+        postings_df = pd.read_csv(file_path)
+    except pd.errors.ParserError as e:
+        st.error(f"Error parsing CSV file: {str(e)}")
+        raise
+    except Exception as e:
+        st.error(f"Unexpected error reading CSV file: {str(e)}")
+        raise
+    
+    # Sample 1000 rows or use all if fewer are available
+    if len(postings_df) < 1000:
+        st.warning(f"CSV file has only {len(postings_df)} rows. Using all available rows.")
+        postings_sample_df = postings_df
+    else:
+        postings_sample_df = postings_df.sample(1000)
+    
+    # Generate combined features and embeddings
     postings_sample_df['combined_features'] = postings_sample_df.apply(combine_features, axis=1)
     postings_sample_df['embeddings'] = list(generate_embeddings_in_batches(postings_sample_df, 'combined_features'))
     job_postings_embeddings = validate_embeddings(postings_sample_df['embeddings'].to_numpy())
+    
     return postings_sample_df, job_postings_embeddings
-
 # Initialize model and job data
 model = load_model()
 try:
